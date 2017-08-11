@@ -1,2 +1,4 @@
 rootProject.name = 'kotlin-vertx-gradle'
-
+if (!JavaVersion.current().java8Compatible) {
+    throw new IllegalStateException("Java 8 required!")
+}

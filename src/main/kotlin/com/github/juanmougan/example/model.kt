@@ -1,3 +1,5 @@
+package com.github.juanmougan.example
+
 /**
  * Models for this example
  *
