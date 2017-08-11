@@ -4,6 +4,7 @@ import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
 import io.vertx.core.http.HttpMethod
 import io.vertx.core.json.Json
+import io.vertx.core.logging.LoggerFactory
 import io.vertx.ext.web.Router
 
 /**
@@ -11,6 +12,10 @@ import io.vertx.ext.web.Router
  */
 
 class MainVerticle : AbstractVerticle() {
+
+    // initiate logging system
+    private val log = LoggerFactory.getLogger("MainVerticle")
+
     // Mock data
     private val MOCK_ISLANDS by lazy {
         listOf(
@@ -25,14 +30,15 @@ class MainVerticle : AbstractVerticle() {
 
     override fun start(startFuture: Future<Void>?) {
         val server = vertx.createHttpServer()
+        log.info("Server created")
         val router = Router.router(vertx)
         val getRouter = router.route().method(HttpMethod.GET)
 
-        val playerByIdRoute = getRouter.path("/players/:playerid/").produces("application/json")
+        val playerByIdRoute = getRouter.path("/players/:playerid")//.produces("application/json")
         playerByIdRoute.handler({ routingContext ->
-
             val playerId = routingContext.request().getParam("playerid").toInt()
-            val player = MOCK_ISLANDS[playerId]
+            log.info("GET /players/$playerId")
+            val player = MOCK_ISLANDS[playerId - 1]
             val response = routingContext.response()
             response.putHeader("content-type", "application/json")
             response.end(Json.encodePrettily(player))
