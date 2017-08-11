@@ -34,7 +34,7 @@ class MainVerticle : AbstractVerticle() {
         val router = Router.router(vertx)
         val getRouter = router.route().method(HttpMethod.GET)
 
-        val playerByIdRoute = getRouter.path("/players/:playerid")//.produces("application/json")
+        val playerByIdRoute = getRouter.path("/players/:playerid").produces("application/json")
         playerByIdRoute.handler({ routingContext ->
             val playerId = routingContext.request().getParam("playerid").toInt()
             log.info("GET /players/$playerId")
